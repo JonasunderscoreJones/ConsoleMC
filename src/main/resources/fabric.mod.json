@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "consolemc",
+  "version": "v0.0.1-alpha1",
+
+  "name": "ConsoleMC",
+  "description": "A mod that allows you to run console commands on the server from the minecraft chat.",
+  "authors": [
+    "Jonas_Jones"
+  ],
+  "contact": {
+    "homepage": "http://jonasjones.me/consolemc",
+    "sources": "https://github.com/J-onasJones/ConsoleMC"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/consolemc/icon.png",
+
+  "environment": "server",
+  "entrypoints": {
+    "main": [
+      "me.jonasjones.consolemc.ConsoleMC"
+    ]
+  },
+  "mixins": [
+    "consolemc.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.6",
+    "fabric": "*",
+    "minecraft": "~1.19",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
