@@ -1,6 +1,7 @@
 package me.jonasjones.consolemc;
 
 import me.jonasjones.consolemc.command.RunCommand;
+import me.jonasjones.consolemc.config.ModConfigs;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import org.slf4j.Logger;
@@ -11,13 +12,15 @@ public class ConsoleMC implements ModInitializer {
 	// It is considered best practice to use your mod id as the logger's name.
 	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("consolemc");
+	public static String MOD_ID = "consolemc";
 
-	private static void registerCommands() {
+	public static void registerCommands() {
 		CommandRegistrationCallback.EVENT.register(RunCommand::register);
 	}
 
 	@Override
 	public void onInitialize() {
+		ModConfigs.registerConfigs();
 		registerCommands();
 	}
 }
