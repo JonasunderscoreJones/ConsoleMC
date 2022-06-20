@@ -1,9 +1,7 @@
 package me.jonasjones.consolemc.command;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.jonasjones.consolemc.ConsoleMC;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
@@ -12,7 +10,6 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import org.apache.logging.log4j.core.jmx.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,7 +19,7 @@ import static me.jonasjones.consolemc.ConsoleMC.registerCommands;
 
 public class RunCommand {
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
-        serverCommandSourceCommandDispatcher.register((((((((((((CommandManager.literal("cmd").requires(source -> source.hasPermissionLevel(4)) //requires OP //TODO: implement config "require-op:[True/False]"
+        serverCommandSourceCommandDispatcher.register((((((((((CommandManager.literal("cmd").requires(source -> source.hasPermissionLevel(4))
                         .then(CommandManager.literal("run")
                                 .then(CommandManager.argument("Console Command", MessageArgumentType.message())
                                         .executes((context -> run(MessageArgumentType.getMessage(context, "Console Command").getString(), context)))))
@@ -38,38 +35,22 @@ public class RunCommand {
                         //allow-commandBlocks Command
                 ).then(CommandManager.literal("allow-commandBlocks")
                         .then(CommandManager.literal("True")
-                                .executes(context -> toggleAllow(context))))
+                                .executes(context -> enableCmdBlocks(context))))
                 ).then(CommandManager.literal("allow-commandBlocks")
                         .then(CommandManager.literal("False")
-                                .executes(context -> toggleAllow(context))))
-
-                        //op-permissionLevel Command
-                ).then(CommandManager.literal("op-permissionLevel")
-                        .then(CommandManager.argument("level", IntegerArgumentType.integer(1, 4))
-                                .executes(context -> setLevel(IntegerArgumentType.integer(IntegerArgumentType.getInteger(context, "level")), context))))
+                                .executes(context -> disableCmdBlocks(context))))
 
                         //enable command
                 ).then(CommandManager.literal("enable")
-                        .executes(context -> toggle(context)))
+                        .executes(context -> enable(context)))
 
                         //disable command
                 ).then(CommandManager.literal("disable")
-                        .executes(context -> toggle(context)))
+                        .executes(context -> disable(context)))
 
                         //help command
                 ).then(CommandManager.literal("help")
                         .executes(context -> help()))
-
-                        //whitelist [add <player>/remove <player>]
-                ).then(CommandManager.literal("whitelist")
-                        .then(CommandManager.literal("add")
-                                .then(CommandManager.argument("target", EntityArgumentType.players())
-                                        .executes(context -> whitelistAdd(EntityArgumentType.getPlayer(context, "Player"), context)))))
-                ).then(CommandManager.literal("whitelist")
-                                .then(CommandManager.literal("remove")
-                                        .then((CommandManager.argument("target", EntityArgumentType.players())
-                                                .executes(context -> whitelistRemove(EntityArgumentType.getPlayer(context, "Player"), context)))))
-
                         //blacklist [add/remove]
                 ).then(CommandManager.literal("blacklist")
                         .then(CommandManager.literal("add")
@@ -112,60 +93,56 @@ public class RunCommand {
             //e.printStackTrace();
             String errorLog = "Error: \"" + cmd + "\", No such file or directory!";
             ConsoleMC.LOGGER.info(errorLog);
-            context.getSource().sendFeedback(Text.of(errorLog), false);
+            broadcastToOP(errorLog, context);
             return -1;
         }
     }
     public static void returnCommandOutput(String cmd, String commandFeedback, CommandContext<ServerCommandSource> context) {
         String consoleLog = "  [" + cmd + "]: " + commandFeedback;
-        context.getSource().sendFeedback(Text.of(consoleLog), false);
+        broadcastToOP(consoleLog, context);
         ConsoleMC.LOGGER.info(consoleLog);
     }
-    public static int toggleAllow(CommandContext<ServerCommandSource> context) {
+    public static int enableCmdBlocks(CommandContext<ServerCommandSource> context) {
 
-        ConsoleMC.LOGGER.info("Toggle Allow-CommandBlocks");
+        broadcastToOP("Enabled ConsoleMC in Commandblocks", context);
+        return 1;
+    }
+    public static int disableCmdBlocks(CommandContext<ServerCommandSource> context) {
+
+        broadcastToOP("Disabled ConsoleMC in Commandblocks", context);
         return 1;
     }
 
     public static int blacklistAdd(ServerPlayerEntity player, CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Add " + player.toString() + " to the blacklist");
+        broadcastToOP("Added " + player.toString() + " to the ConsoleMC blacklist", context);
         return 1;
     }
     public static int blacklistRemove(ServerPlayerEntity player, CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Remove " + player.toString() + " from the blacklist");
+        broadcastToOP("Removed " + player.toString() + " from the ConsoleMC blacklist", context);
         return 1;
     }
 
     public static int reloadCommands(CommandContext<ServerCommandSource> context) {
         registerCommands();
-        ConsoleMC.LOGGER.info("Reloaded Commands!");
+        broadcastToOP("DEBUG Reregistered /cmd command", context);
         return 1;
     }
 
-    public static int setLevel(IntegerArgumentType level, CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Set Command OP Permission Level to: " + level.toString());
-        return 1;
-    }
     public static int help() {
         ConsoleMC.LOGGER.info("Print help");
         return 1;
     }
     public static int reload(CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Reloading!");
+        broadcastToOP("Reloaded ConsoleMC Config", context);
         return 1;
     }
 
-    public static int toggle(CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Toggle Enable");
+    public static int enable(CommandContext<ServerCommandSource> context) {
+        broadcastToOP("Enabled ConsoleMC commands", context);
         return 1;
     }
-
-    public static int whitelistAdd(ServerPlayerEntity player, CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Add " + player.toString() + " to whitelist");
-        return 1;
-    }
-    public static int whitelistRemove(ServerPlayerEntity player, CommandContext<ServerCommandSource> context) {
-        ConsoleMC.LOGGER.info("Remove " + player.toString() + " from whitelist");
+    public static int disable(CommandContext<ServerCommandSource> context) {
+        broadcastToOP("Disabled ConsoleMC commands", context);
         return 1;
     }
 }
