@@ -7,10 +7,9 @@ public class ModConfigs {
     public static SimpleConfig CONFIG;
     private static ModConfigProvider configs;
 
-    public static String TEST;
-    public static int SOME_INT;
-    public static double SOME_DOUBLE;
-    public static int MAX_DAMAGE_DOWSING_ROD;
+    public static boolean IS_ENABLED;
+    public static boolean REUQIRE_OP;
+    public static boolean ALLOW_CMD_BLOCKS;
 
     public static void registerConfigs() {
         configs = new ModConfigProvider();
@@ -22,17 +21,15 @@ public class ModConfigs {
     }
 
     private static void createConfigs() {
-        configs.addKeyValuePair(new Pair<>("key.test.value1", "Just a Testing string!"), "String");
-        configs.addKeyValuePair(new Pair<>("key.test.value2", 50), "int");
-        configs.addKeyValuePair(new Pair<>("key.test.value3", 4142.5), "double");
-        configs.addKeyValuePair(new Pair<>("dowsing.rod.max.damage", 32), "int");
+        configs.addKeyValuePair(new Pair<>("cmd.enable", true), "whether or not to allow chat command execution.");
+        configs.addKeyValuePair(new Pair<>("cmd.requireOp", true), "whether or not operator level is required in order to run commands.");
+        configs.addKeyValuePair(new Pair<>("cmd.allowCmdBlocks", false), "whether or not commands can be un through command blocks");
     }
 
     private static void assignConfigs() {
-        TEST = CONFIG.getOrDefault("key.test.value1", "Nothing");
-        SOME_INT = CONFIG.getOrDefault("key.test.value2", 42);
-        SOME_DOUBLE = CONFIG.getOrDefault("key.test.value3", 42.0d);
-        MAX_DAMAGE_DOWSING_ROD = CONFIG.getOrDefault("dowsing.rod.max.damage", 32);
+        IS_ENABLED = CONFIG.getOrDefault("cmd.enable", true);
+        REUQIRE_OP = CONFIG.getOrDefault("cmd.requireOp", true);
+        ALLOW_CMD_BLOCKS = CONFIG.getOrDefault("cmd.allowCmdBlocks", false);
 
         System.out.println("All " + configs.getConfigsList().size() + " have been set properly");
     }
