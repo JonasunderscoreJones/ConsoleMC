@@ -8,9 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ConsoleMC implements ModInitializer {
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger("consolemc");
 	public static String MOD_ID = "consolemc";
 
@@ -18,9 +15,15 @@ public class ConsoleMC implements ModInitializer {
 		CommandRegistrationCallback.EVENT.register(RunCommand::register);
 	}
 
+	//find out if operating system is windows
+	public static boolean ISWINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
+	public static String OS = System.getProperty("os.name");
+
 	@Override
 	public void onInitialize() {
 		ModConfigs.registerConfigs();
 		registerCommands();
+		LOGGER.info("ConsoleMC initialized!");
+		LOGGER.info("Server running on " + OS);
 	}
 }

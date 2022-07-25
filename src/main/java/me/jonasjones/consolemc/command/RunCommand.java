@@ -3,6 +3,7 @@ package me.jonasjones.consolemc.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import me.jonasjones.consolemc.ConsoleMC;
+import me.jonasjones.consolemc.system.ShellCommand;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.command.argument.MessageArgumentType;
@@ -75,27 +76,7 @@ public class RunCommand {
         }
     }
     public static int runCommand(String cmd, CommandContext<ServerCommandSource> context) {
-        Process process = null;
-        try {
-            process = Runtime.getRuntime().exec(cmd);
-
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            String s = null;
-            while ((s = stdInput.readLine()) != null) {
-                returnCommandOutput(cmd, s, context);
-            }
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-            while ((s = stdError.readLine()) != null) {
-                returnCommandOutput(cmd, s, context);
-            }
-            return 1;
-        } catch (IOException e) {
-            //e.printStackTrace();
-            String errorLog = "Error: \"" + cmd + "\", No such file or directory!";
-            ConsoleMC.LOGGER.info(errorLog);
-            broadcastToOP(errorLog, context);
-            return -1;
-        }
+        return ShellCommand.execute(cmd, context);
     }
     public static void returnCommandOutput(String cmd, String commandFeedback, CommandContext<ServerCommandSource> context) {
         String consoleLog = "  [" + cmd + "]: " + commandFeedback;
