@@ -1,9 +1,6 @@
 # ConsoleMC
 A mod that allows console commands to be executed over the ingame Minecraft chat.
 
-<img src="https://media.forgecdn.net/attachments/480/856/fabricapi.png" width="150px">
-<img src="https://media.forgecdn.net/attachments/480/859/forge_support.png" width="150px">
-
 If the images above aren't visible it's because curseforge is down again (I'm just gonna leave this here)
 
 ## //TODO
