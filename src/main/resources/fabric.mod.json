@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "http://jonasjones.me/consolemc",
-    "sources": "https://github.com/J-onasJones/ConsoleMC"
+    "sources": "https://github.com/J-onasJones/ConsoleMC",
+    "issues": "https://github.com/J-onasJones/ConsoleMC/issues"
   },
 
   "license": "CC0-1.0",

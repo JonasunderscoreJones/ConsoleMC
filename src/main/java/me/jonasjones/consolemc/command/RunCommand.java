@@ -76,7 +76,8 @@ public class RunCommand {
         }
     }
     public static int runCommand(String cmd, CommandContext<ServerCommandSource> context) {
-        return ShellCommand.execute(cmd, context);
+        new Thread(() -> {ShellCommand.execute(cmd, context);}).start();
+        return 1;
     }
     public static void returnCommandOutput(String cmd, String commandFeedback, CommandContext<ServerCommandSource> context) {
         String consoleLog = "  [" + cmd + "]: " + commandFeedback;
