@@ -23,7 +23,7 @@ public class ModConfigs {
     private static void createConfigs() {
         configs.addKeyValuePair(new Pair<>("cmd.enable", true), "whether or not to allow chat command execution.");
         configs.addKeyValuePair(new Pair<>("cmd.requireOp", true), "whether or not operator level is required in order to run commands.");
-        configs.addKeyValuePair(new Pair<>("cmd.allowCmdBlocks", false), "whether or not commands can be un through command blocks");
+        configs.addKeyValuePair(new Pair<>("cmd.allowCmdBlocks", false), "whether or not commands can be run through command blocks");
     }
 
     private static void assignConfigs() {

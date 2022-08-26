@@ -17,13 +17,11 @@ public class ConsoleMC implements ModInitializer {
 
 	//find out if operating system is windows
 	public static boolean ISWINDOWS = System.getProperty("os.name").toLowerCase().startsWith("windows");
-	public static String OS = System.getProperty("os.name");
 
 	@Override
 	public void onInitialize() {
-		ModConfigs.registerConfigs();
+		//ModConfigs.registerConfigs();
 		registerCommands();
 		LOGGER.info("ConsoleMC initialized!");
-		LOGGER.info("Server running on " + OS);
 	}
 }
