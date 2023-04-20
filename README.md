@@ -7,13 +7,11 @@
 <a href="https://modrinth.com/mod/consolemc"><img src="https://img.shields.io/modrinth/game-versions/consolemc?logo=modrinth&color=242629&labelColor=00AF5C&logoColor=white"></a>
 ![GitHub all releases](https://img.shields.io/github/downloads/J-onasJones/ConsoleMC/total?label=GitHub%20downloads)
 
-<a align="center"><img src="https://jonasjones.me/uploads/mod-badges/support-fabric.png" width="250px"><img src="https://jonasjones.me/uploads/mod-badges/support-quilt.png" width="250px"></a>
+<a align="center"><img src="http://cdn.jonasjones.me/uploads/mod-badges/fabric-api.png" width="250px">
+<img src="http://cdn.jonasjones.me/uploads/mod-badges/no-support-forge.png" width="250px">
+<img src="http://cdn.jonasjones.me/uploads/mod-badges/available-modrinth.png" width="250px"><img src="http://cdn.jonasjones.me/uploads/mod-badges/support-fabric.png"  width="250px"><img src="http://cdn.jonasjones.me/uploads/mod-badges/support-quilt.png" width="250px"></a>
 
 A mod that allows console commands to be executed over the ingame Minecraft chat.
-
-<img src="https://jonasjones.me/uploads/mod-badges/fabric-api.png" width="250px">
-<img src="https://jonasjones.me/uploads/mod-badges/no-support-forge.png" width="250px">
-<img src="https://jonasjones.me/uploads/mod-badges/available-modrinth.png" width="250px">
 
 If the images above aren't visible it's because curseforge is down again (I'm just gonna leave this here)
 
