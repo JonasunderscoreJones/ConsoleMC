@@ -10,6 +10,8 @@ import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
+import java.util.function.Supplier;
+
 public class RunCommand {
     public static void register(CommandDispatcher<ServerCommandSource> serverCommandSourceCommandDispatcher, CommandRegistryAccess commandRegistryAccess, CommandManager.RegistrationEnvironment registrationEnvironment) {
         serverCommandSourceCommandDispatcher.register((CommandManager.literal("cmd").requires(source -> source.hasPermissionLevel(4))
@@ -18,7 +20,7 @@ public class RunCommand {
         );
     }
     public static void broadcastToOP(String message, CommandContext<ServerCommandSource> context) {
-        context.getSource().sendFeedback(Text.of(message), true);
+        context.getSource().sendFeedback(() -> Text.of(message), true);
     }
 
     public static int run(String command, CommandContext<ServerCommandSource> context) {
