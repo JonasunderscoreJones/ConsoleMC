@@ -1,0 +1,41 @@
+name: build-java
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: docker
+    steps:
+      - name: checkout repository
+        uses: https://code.forgejo.org/actions/checkout@v4
+      - name: setup jdk
+        uses: https://github.com/actions/setup-java@v4
+        with:
+          java-version: |
+            8
+            21
+          distribution: temurin
+      - name: restore cached dependencies
+        uses: https://code.forgejo.org/actions/cache/restore@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-Gradle
+      - name: build
+        run: ./gradlew build --no-daemon --warning-mode=all
+      - name: capture build artifacts
+        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: build-artifacts.zip
+          path: |
+            build/libs
+            !build/libs/*-all.jar
+          if-no-files-found: error
+      - name: cache downloaded dependencies
+        if: ${{ github.ref_name == github.event.repository.default_branch }}
+        uses: https://code.forgejo.org/actions/cache/save@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-Gradle
